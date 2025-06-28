@@ -1,0 +1,118 @@
+{
+  "15m": {
+    "best_by_returns": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 24.0,
+      "transaction_cost": 0.001,
+      "total_trades": 53.0,
+      "win_rate": 0.5094339622641509,
+      "total_returns": 0.009772599595812968,
+      "avg_returns": 0.0001843886716191126,
+      "max_drawdown": -0.039303130148270284,
+      "sharpe_ratio": 0.013836890616956674,
+      "calmar_ratio": 10.274275593890026,
+      "profit_factor": 1.0460687706031637
+    },
+    "best_by_sharpe": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 24.0,
+      "transaction_cost": 0.001,
+      "total_trades": 53.0,
+      "win_rate": 0.5094339622641509,
+      "total_returns": 0.009772599595812968,
+      "avg_returns": 0.0001843886716191126,
+      "max_drawdown": -0.039303130148270284,
+      "sharpe_ratio": 0.013836890616956674,
+      "calmar_ratio": 10.274275593890026,
+      "profit_factor": 1.0460687706031637
+    },
+    "best_by_calmar": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 24.0,
+      "transaction_cost": 0.001,
+      "total_trades": 53.0,
+      "win_rate": 0.5094339622641509,
+      "total_returns": 0.009772599595812968,
+      "avg_returns": 0.0001843886716191126,
+      "max_drawdown": -0.039303130148270284,
+      "sharpe_ratio": 0.013836890616956674,
+      "calmar_ratio": 10.274275593890026,
+      "profit_factor": 1.0460687706031637
+    },
+    "best_by_profit_factor": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 24.0,
+      "transaction_cost": 0.001,
+      "total_trades": 53.0,
+      "win_rate": 0.5094339622641509,
+      "total_returns": 0.009772599595812968,
+      "avg_returns": 0.0001843886716191126,
+      "max_drawdown": -0.039303130148270284,
+      "sharpe_ratio": 0.013836890616956674,
+      "calmar_ratio": 10.274275593890026,
+      "profit_factor": 1.0460687706031637
+    }
+  },
+  "5m": {
+    "best_by_returns": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 12.0,
+      "transaction_cost": 0.001,
+      "total_trades": 41.0,
+      "win_rate": 0.6097560975609756,
+      "total_returns": 0.01938788353240265,
+      "avg_returns": 0.00047287520810738174,
+      "max_drawdown": -0.01625495936380311,
+      "sharpe_ratio": 0.07181924414679672,
+      "calmar_ratio": 63.70958441528036,
+      "profit_factor": 1.2894510098541239
+    },
+    "best_by_sharpe": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 12.0,
+      "transaction_cost": 0.001,
+      "total_trades": 41.0,
+      "win_rate": 0.6097560975609756,
+      "total_returns": 0.01938788353240265,
+      "avg_returns": 0.00047287520810738174,
+      "max_drawdown": -0.01625495936380311,
+      "sharpe_ratio": 0.07181924414679672,
+      "calmar_ratio": 63.70958441528036,
+      "profit_factor": 1.2894510098541239
+    },
+    "best_by_calmar": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 12.0,
+      "transaction_cost": 0.001,
+      "total_trades": 41.0,
+      "win_rate": 0.6097560975609756,
+      "total_returns": 0.01938788353240265,
+      "avg_returns": 0.00047287520810738174,
+      "max_drawdown": -0.01625495936380311,
+      "sharpe_ratio": 0.07181924414679672,
+      "calmar_ratio": 63.70958441528036,
+      "profit_factor": 1.2894510098541239
+    },
+    "best_by_profit_factor": {
+      "threshold": 0.55,
+      "confidence_threshold": 0.9,
+      "holding_period": 12.0,
+      "transaction_cost": 0.001,
+      "total_trades": 41.0,
+      "win_rate": 0.6097560975609756,
+      "total_returns": 0.01938788353240265,
+      "avg_returns": 0.00047287520810738174,
+      "max_drawdown": -0.01625495936380311,
+      "sharpe_ratio": 0.07181924414679672,
+      "calmar_ratio": 63.70958441528036,
+      "profit_factor": 1.2894510098541239
+    }
+  }
+}

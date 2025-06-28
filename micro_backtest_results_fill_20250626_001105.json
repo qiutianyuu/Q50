@@ -1,0 +1,68 @@
+[
+  {
+    "total_trades": 5,
+    "win_rate": 0.8,
+    "total_return": 0.0009031288472984326,
+    "avg_return": 0.00018062576945968652,
+    "sharpe": 1.5187608755329003,
+    "max_drawdown": -0.017181563773307963,
+    "threshold_long": 0.7,
+    "threshold_short": 0.3,
+    "holding_steps": 240
+  },
+  {
+    "total_trades": 9,
+    "win_rate": 0.4444444444444444,
+    "total_return": -7.26454944822893e-05,
+    "avg_return": -8.071721609143255e-06,
+    "sharpe": -0.020560209094235476,
+    "max_drawdown": -1.2016693147678665,
+    "threshold_long": 0.7,
+    "threshold_short": 0.3,
+    "holding_steps": 120
+  },
+  {
+    "total_trades": 5,
+    "win_rate": 0.8,
+    "total_return": 0.0009031288472984326,
+    "avg_return": 0.00018062576945968652,
+    "sharpe": 1.5187608755329003,
+    "max_drawdown": -0.017181563773307963,
+    "threshold_long": 0.65,
+    "threshold_short": 0.35,
+    "holding_steps": 240
+  },
+  {
+    "total_trades": 9,
+    "win_rate": 0.4444444444444444,
+    "total_return": -7.26454944822893e-05,
+    "avg_return": -8.071721609143255e-06,
+    "sharpe": -0.020560209094235476,
+    "max_drawdown": -1.2016693147678665,
+    "threshold_long": 0.65,
+    "threshold_short": 0.35,
+    "holding_steps": 120
+  },
+  {
+    "total_trades": 5,
+    "win_rate": 0.8,
+    "total_return": 0.0009031288472984326,
+    "avg_return": 0.00018062576945968652,
+    "sharpe": 1.5187608755329003,
+    "max_drawdown": -0.017181563773307963,
+    "threshold_long": 0.6,
+    "threshold_short": 0.4,
+    "holding_steps": 240
+  },
+  {
+    "total_trades": 9,
+    "win_rate": 0.4444444444444444,
+    "total_return": -7.26454944822893e-05,
+    "avg_return": -8.071721609143255e-06,
+    "sharpe": -0.020560209094235476,
+    "max_drawdown": -1.2016693147678665,
+    "threshold_long": 0.6,
+    "threshold_short": 0.4,
+    "holding_steps": 120
+  }
+]

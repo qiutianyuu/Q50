@@ -1,0 +1,13 @@
+[
+  {
+    "total_trades": 17,
+    "win_rate": 0.5294117647058824,
+    "total_return": -8.431896490207957e-05,
+    "avg_return": -4.959939111887034e-06,
+    "sharpe": -0.015061958521299325,
+    "max_drawdown": -1.0718223156474669,
+    "threshold_long": 0.7,
+    "threshold_short": 0.3,
+    "holding_steps": 60
+  }
+]

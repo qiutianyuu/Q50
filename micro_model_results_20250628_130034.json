@@ -1,0 +1,182 @@
+{
+  "label_h120_a0.3_maker": {
+    "accuracy": 0.979381443298969,
+    "auc": 0.9990990990990991,
+    "feature_importance": [
+      {
+        "feature": "bid_price_impact",
+        "importance": 0.3754223585128784
+      },
+      {
+        "feature": "price_mean",
+        "importance": 0.08700109273195267
+      },
+      {
+        "feature": "price_volatility",
+        "importance": 0.0758410394191742
+      },
+      {
+        "feature": "price_trend",
+        "importance": 0.0727158710360527
+      },
+      {
+        "feature": "bid_vwap",
+        "importance": 0.061162255704402924
+      },
+      {
+        "feature": "mid_price",
+        "importance": 0.05868341401219368
+      },
+      {
+        "feature": "ask_volume",
+        "importance": 0.05853106454014778
+      },
+      {
+        "feature": "ask_vwap",
+        "importance": 0.05598343536257744
+      },
+      {
+        "feature": "total_volume_x",
+        "importance": 0.04066361486911774
+      },
+      {
+        "feature": "trend_deviation",
+        "importance": 0.0404842272400856
+      },
+      {
+        "feature": "price_pressure",
+        "importance": 0.02846820093691349
+      },
+      {
+        "feature": "price_change_abs",
+        "importance": 0.02047681249678135
+      },
+      {
+        "feature": "volume_imbalance",
+        "importance": 0.010012752376496792
+      },
+      {
+        "feature": "price_change",
+        "importance": 0.008267536759376526
+      },
+      {
+        "feature": "bid_volume",
+        "importance": 0.006286310497671366
+      },
+      {
+        "feature": "bid_levels_available",
+        "importance": 0.0
+      },
+      {
+        "feature": "bid_queue_depth",
+        "importance": 0.0
+      },
+      {
+        "feature": "ask_queue_depth",
+        "importance": 0.0
+      },
+      {
+        "feature": "fill_prob_imbalance",
+        "importance": 0.0
+      },
+      {
+        "feature": "buy_pressure_change",
+        "importance": 0.0
+      },
+      {
+        "feature": "ask_levels_available",
+        "importance": 0.0
+      },
+      {
+        "feature": "spread_change",
+        "importance": 0.0
+      },
+      {
+        "feature": "ask_fill_prob_change",
+        "importance": 0.0
+      },
+      {
+        "feature": "optimal_bid_size",
+        "importance": 0.0
+      },
+      {
+        "feature": "bid_fill_prob_change",
+        "importance": 0.0
+      },
+      {
+        "feature": "optimal_ask_size",
+        "importance": 0.0
+      },
+      {
+        "feature": "trade_count",
+        "importance": 0.0
+      },
+      {
+        "feature": "ask_price_impact",
+        "importance": 0.0
+      },
+      {
+        "feature": "ask_fill_prob",
+        "importance": 0.0
+      },
+      {
+        "feature": "bid_fill_prob",
+        "importance": 0.0
+      },
+      {
+        "feature": "trade_frequency",
+        "importance": 0.0
+      },
+      {
+        "feature": "vwap",
+        "importance": 0.0
+      },
+      {
+        "feature": "price_momentum",
+        "importance": 0.0
+      },
+      {
+        "feature": "buy_ratio",
+        "importance": 0.0
+      },
+      {
+        "feature": "large_trades",
+        "importance": 0.0
+      },
+      {
+        "feature": "avg_trade_size",
+        "importance": 0.0
+      },
+      {
+        "feature": "total_volume_y",
+        "importance": 0.0
+      },
+      {
+        "feature": "price_range",
+        "importance": 0.0
+      },
+      {
+        "feature": "price_std",
+        "importance": 0.0
+      },
+      {
+        "feature": "rel_spread",
+        "importance": 0.0
+      },
+      {
+        "feature": "spread_bps",
+        "importance": 0.0
+      },
+      {
+        "feature": "spread",
+        "importance": 0.0
+      },
+      {
+        "feature": "price_impact_imbalance",
+        "importance": 0.0
+      }
+    ],
+    "train_samples": 385,
+    "test_samples": 97
+  }
+}

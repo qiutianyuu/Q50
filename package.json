@@ -1,0 +1,15 @@
+{
+  "name": "q50-air",
+  "version": "1.0.0",
+  "main": "checkSwap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "web3": "^4.16.0"
+  }
+}

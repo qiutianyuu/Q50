@@ -1,0 +1,16 @@
+{
+  "pairAddress": "0x6f88ff33196dbd1b99020d9913efde5c695c02d5",
+  "blockRange": {
+    "fromBlock": 47945929,
+    "toBlock": 47960329
+  },
+  "stats": {
+    "totalTrades": 0,
+    "totalRemoveLiquidity": 0,
+    "totalBuyVolume": "0.0000",
+    "totalSellVolume": "0.0000"
+  },
+  "frequentTraders": [],
+  "trades": [],
+  "removeLiquidityEvents": []
+}

@@ -1,0 +1,10 @@
+{
+  "technical_accuracy": 0.5185185185185185,
+  "technical_auc": 0.46590909090909094,
+  "orderflow_accuracy": 0.4444444444444444,
+  "orderflow_auc": 0.4375,
+  "accuracy_improvement": -0.07407407407407407,
+  "auc_improvement": -0.02840909090909094,
+  "technical_features": 44,
+  "orderflow_features": 81
+}

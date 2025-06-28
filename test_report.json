@@ -1,0 +1,11 @@
+{
+  "test_time": "2025-06-25T16:33:42.743420",
+  "event_detection": true,
+  "label_generation": true,
+  "integration": true,
+  "summary": [
+    "\u2705 \u4e8b\u4ef6\u68c0\u6d4b\u6d4b\u8bd5\u901a\u8fc7",
+    "\u2705 \u6807\u7b7e\u751f\u6210\u6d4b\u8bd5\u901a\u8fc7",
+    "\u2705 \u96c6\u6210\u6d4b\u8bd5\u901a\u8fc7"
+  ]
+}

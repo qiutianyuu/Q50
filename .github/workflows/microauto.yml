@@ -1,0 +1,68 @@
+name: microauto
+
+on:
+  workflow_dispatch:          # 手动触发
+  schedule:
+    - cron: '0 2 * * *'       # UTC 每天 02:00
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate labels
+        run: |
+          python generate_micro_labels.py \
+            --horizon 120 --alpha 0.3 --mode maker --require-fill \
+            --output data/labels.parquet
+
+      - name: Train model
+        run: |
+          python train_micro_xgb.py \
+            --features data/labels.parquet \
+            --model-out xgb_model.bin \
+            --label-col label_h120_a0.3_maker
+
+      - name: Run backtest
+        run: |
+          python micro_backtest_maker.py \
+            --model xgb_model.bin \
+            --features data/labels.parquet \
+            --json-out backtest_results.json
+
+      - name: Select best parameters
+        run: |
+          python scripts/select_best.py backtest_results.json --metric sharpe > best_params.yaml
+
+      - name: Update config
+        run: |
+          mkdir -p config
+          cp best_params.yaml config/micro_best.yaml
+
+      - name: Commit and push
+        run: |
+          git config user.name "micro-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add config/micro_best.yaml
+          git commit -m "auto: update micro_best params" || echo "No changes"
+          git push
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: backtest-${{ github.run_number }}
+          path: |
+            backtest_results.json
+            best_params.yaml
+            xgb_model.bin 

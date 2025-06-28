@@ -1,0 +1,32 @@
+{
+  "best_auc": 0.5970177677325932,
+  "best_params": {
+    "max_depth": 3,
+    "learning_rate": 0.08358016933706078,
+    "n_estimators": 68,
+    "reg_alpha": 9.342754000389386,
+    "reg_lambda": 0.05812801578796529,
+    "subsample": 0.744892354966932,
+    "colsample_bytree": 0.6031345594280494,
+    "colsample_bylevel": 0.8623774969787774,
+    "min_child_weight": 10,
+    "gamma": 0.020104839648498903,
+    "scale_pos_weight": 1.6903325202918598
+  },
+  "n_trials": 50,
+  "feature_cols": [
+    "trend_strength_96",
+    "high_low_range",
+    "is_high_vol_hour",
+    "trend_strength_48",
+    "volatility_12",
+    "trend_strength_12",
+    "day_of_week",
+    "trend_strength_24",
+    "ret_12",
+    "high_low_range_ma",
+    "oi_ma",
+    "volatility_24",
+    "hour"
+  ]
+}

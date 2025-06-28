@@ -1,0 +1,26 @@
+{
+  "api_key": "DrLgP949hSyAbwuQvoaHGwQ6Ib9UTyM8mGXOU6vcYMuGRboK5qarLRNAL92E7ogC",
+  "secret_key": "hQ1juf3qpZRsiwkaHOWGALFMORnK93GDlZOmT3uY4g0MOiyVcPeiSk7blOMLjV3c",
+  "testnet": false,
+  "websocket": {
+    "base_url": "wss://stream.binance.com:9443",
+    "rest_url": "https://api.binance.com/api/v3",
+    "ping_interval": 20,
+    "reconnect_delay": 5
+  },
+  "trading": {
+    "symbol": "ETHUSDT",
+    "position_size": 0.01,
+    "max_positions": 1,
+    "stop_loss_pct": 0.02,
+    "take_profit_pct": 0.03
+  },
+  "streams": {
+    "depth": true,
+    "trade": true,
+    "kline_1m": false,
+    "kline_5m": true,
+    "kline_15m": true,
+    "kline_1h": false
+  }
+} 

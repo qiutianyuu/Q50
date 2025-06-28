@@ -1,0 +1,35 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.so
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Virtual env
+.venv/
+venv/
+
+# Data & large binaries
+/data/
+*.parquet
+*.csv
+*.jsonl
+*.log
+*.bin
+*.pkl
+*.db
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
+
+# IntelliJ / VSCode
+.idea/
+.vscode/ 

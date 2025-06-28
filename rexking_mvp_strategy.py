@@ -1,0 +1,270 @@
+import pandas as pd
+import numpy as np
+import talib
+from datetime import datetime, timedelta
+import warnings
+warnings.filterwarnings('ignore')
+
+class RexKingMVPStrategy:
+    def __init__(self):
+        # MVP简化参数 - 针对5分钟数据优化
+        self.rsi_period = 14
+        self.rsi_oversold = 30
+        self.rsi_overbought = 70
+        
+        self.vwap_period = 20
+        
+        self.macd_fast = 12
+        self.macd_slow = 26
+        self.macd_signal = 9
+        
+        # 简化的信号阈值
+        self.long_threshold = 0.3  # 降低阈值，更容易触发
+        self.short_threshold = -0.3
+        
+        # 风险管理
+        self.stop_loss_pct = 0.02  # 2%止损
+        self.take_profit_pct = 0.04  # 4%止盈
+        self.max_position_size = 0.1  # 最大仓位10%
+        
+        # 交易状态
+        self.position = 0  # 0: 无仓位, 1: 多头, -1: 空头
+        self.entry_price = 0
+        self.entry_time = None
+        
+    def calculate_indicators(self, df):
+        """计算核心指标"""
+        # RSI
+        df['rsi'] = talib.RSI(df['close'], timeperiod=self.rsi_period)
+        
+        # VWAP
+        df['vwap'] = talib.SMA(df['close'], timeperiod=self.vwap_period)
+        
+        # MACD
+        df['macd'], df['macd_signal'], df['macd_hist'] = talib.MACD(
+            df['close'], 
+            fastperiod=self.macd_fast, 
+            slowperiod=self.macd_slow, 
+            signalperiod=self.macd_signal
+        )
+        
+        # 简化的价格动量
+        df['price_momentum'] = df['close'].pct_change(3)
+        
+        # 简化的成交量指标
+        df['volume_ratio'] = df['volume'] / df['volume'].rolling(10).mean()
+        
+        return df
+    
+    def calculate_signal_score(self, row):
+        """计算综合信号分数"""
+        score = 0
+        
+        # RSI信号 (权重: 0.3)
+        if row['rsi'] < self.rsi_oversold:
+            score += 0.3
+        elif row['rsi'] > self.rsi_overbought:
+            score -= 0.3
+        
+        # VWAP信号 (权重: 0.3)
+        if row['close'] > row['vwap']:
+            score += 0.3
+        else:
+            score -= 0.3
+        
+        # MACD信号 (权重: 0.2)
+        if row['macd'] > row['macd_signal']:
+            score += 0.2
+        else:
+            score -= 0.2
+        
+        # 价格动量 (权重: 0.1)
+        if row['price_momentum'] > 0:
+            score += 0.1
+        else:
+            score -= 0.1
+        
+        # 成交量确认 (权重: 0.1)
+        if row['volume_ratio'] > 1.2:
+            score += 0.1
+        elif row['volume_ratio'] < 0.8:
+            score -= 0.1
+        
+        return score
+    
+    def should_exit(self, current_price, current_time):
+        """检查是否应该平仓"""
+        if self.position == 0:
+            return False, ""
+        
+        # 止损检查
+        if self.position == 1:  # 多头
+            loss_pct = (current_price - self.entry_price) / self.entry_price
+            if loss_pct <= -self.stop_loss_pct:
+                return True, "止损"
+            if loss_pct >= self.take_profit_pct:
+                return True, "止盈"
+        
+        elif self.position == -1:  # 空头
+            loss_pct = (self.entry_price - current_price) / self.entry_price
+            if loss_pct <= -self.stop_loss_pct:
+                return True, "止损"
+            if loss_pct >= self.take_profit_pct:
+                return True, "止盈"
+        
+        # 时间止损 (4小时)
+        if self.entry_time and (current_time - self.entry_time).total_seconds() > 4 * 3600:
+            return True, "时间止损"
+        
+        return False, ""
+    
+    def backtest(self, data_file):
+        """回测策略"""
+        print(f"开始MVP策略回测: {data_file}")
+        
+        # 读取数据
+        df = pd.read_csv(data_file)
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df = df.sort_values('timestamp').reset_index(drop=True)
+        
+        # 计算指标
+        df = self.calculate_indicators(df)
+        
+        # 初始化结果
+        trades = []
+        equity_curve = []
+        initial_capital = 50000
+        current_capital = initial_capital
+        
+        print(f"数据范围: {df['timestamp'].min()} 到 {df['timestamp'].max()}")
+        print(f"总数据点: {len(df)}")
+        
+        signal_count = 0
+        
+        for i, row in df.iterrows():
+            current_price = row['close']
+            current_time = row['timestamp']
+            
+            # 检查平仓条件
+            should_exit, exit_reason = self.should_exit(current_price, current_time)
+            
+            if should_exit and self.position != 0:
+                # 计算收益
+                if self.position == 1:  # 多头平仓
+                    pnl = (current_price - self.entry_price) / self.entry_price
+                else:  # 空头平仓
+                    pnl = (self.entry_price - current_price) / self.entry_price
+                
+                trade_pnl = pnl * current_capital * self.max_position_size
+                current_capital += trade_pnl
+                
+                trades.append({
+                    'entry_time': self.entry_time,
+                    'exit_time': current_time,
+                    'entry_price': self.entry_price,
+                    'exit_price': current_price,
+                    'position': self.position,
+                    'pnl': trade_pnl,
+                    'pnl_pct': pnl,
+                    'exit_reason': exit_reason
+                })
+                
+                print(f"平仓: {exit_reason} | 价格: {current_price:.2f} | PnL: {trade_pnl:.2f} | 收益率: {pnl*100:.2f}%")
+                
+                self.position = 0
+                self.entry_price = 0
+                self.entry_time = None
+            
+            # 如果无仓位，检查开仓信号
+            if self.position == 0 and i > 20:  # 确保有足够的历史数据
+                signal_score = self.calculate_signal_score(row)
+                
+                # 记录信号用于调试
+                if abs(signal_score) > 0.2:
+                    signal_count += 1
+                    if signal_count <= 10:  # 只打印前10个信号
+                        print(f"信号 {signal_count}: 时间={current_time}, 分数={signal_score:.3f}, "
+                              f"RSI={row['rsi']:.1f}, VWAP_diff={(row['close']-row['vwap'])/row['vwap']*100:.2f}%, "
+                              f"MACD_diff={(row['macd']-row['macd_signal'])*100:.3f}%")
+                
+                # 开仓条件
+                if signal_score > self.long_threshold:
+                    self.position = 1
+                    self.entry_price = current_price
+                    self.entry_time = current_time
+                    print(f"开多仓: 价格={current_price:.2f}, 信号分数={signal_score:.3f}")
+                
+                elif signal_score < self.short_threshold:
+                    self.position = -1
+                    self.entry_price = current_price
+                    self.entry_time = current_time
+                    print(f"开空仓: 价格={current_price:.2f}, 信号分数={signal_score:.3f}")
+            
+            # 记录权益曲线
+            equity_curve.append({
+                'timestamp': current_time,
+                'equity': current_capital,
+                'position': self.position
+            })
+        
+        # 如果最后还有持仓，强制平仓
+        if self.position != 0:
+            final_price = df.iloc[-1]['close']
+            if self.position == 1:
+                pnl = (final_price - self.entry_price) / self.entry_price
+            else:
+                pnl = (self.entry_price - final_price) / self.entry_price
+            
+            trade_pnl = pnl * current_capital * self.max_position_size
+            current_capital += trade_pnl
+            
+            trades.append({
+                'entry_time': self.entry_time,
+                'exit_time': df.iloc[-1]['timestamp'],
+                'entry_price': self.entry_price,
+                'exit_price': final_price,
+                'position': self.position,
+                'pnl': trade_pnl,
+                'pnl_pct': pnl,
+                'exit_reason': '强制平仓'
+            })
+        
+        # 计算统计结果
+        total_return = (current_capital - initial_capital) / initial_capital
+        total_trades = len(trades)
+        
+        if total_trades > 0:
+            winning_trades = [t for t in trades if t['pnl'] > 0]
+            win_rate = len(winning_trades) / total_trades
+            
+            total_pnl = sum(t['pnl'] for t in trades)
+            avg_pnl = total_pnl / total_trades
+            
+            print(f"\n=== MVP策略回测结果 ===")
+            print(f"初始资金: ${initial_capital:,.2f}")
+            print(f"最终资金: ${current_capital:,.2f}")
+            print(f"总收益: ${current_capital - initial_capital:,.2f}")
+            print(f"总收益率: {total_return*100:.2f}%")
+            print(f"总交易次数: {total_trades}")
+            print(f"胜率: {win_rate*100:.1f}%")
+            print(f"平均每笔收益: ${avg_pnl:.2f}")
+            print(f"信号触发次数: {signal_count}")
+            
+            # 保存交易记录
+            trades_df = pd.DataFrame(trades)
+            trades_df.to_csv('rexking_mvp_trades.csv', index=False)
+            print(f"交易记录已保存到: rexking_mvp_trades.csv")
+            
+        else:
+            print(f"\n=== MVP策略回测结果 ===")
+            print(f"无交易产生")
+            print(f"信号触发次数: {signal_count}")
+            print(f"建议调整参数以产生更多信号")
+        
+        return trades, equity_curve
+
+if __name__ == "__main__":
+    strategy = RexKingMVPStrategy()
+    
+    # 回测5月数据
+    trades, equity = strategy.backtest('data/ETHUSDT-1h-2025-04.csv') 
