@@ -23,20 +23,7 @@ jobs:
 
       - name: Prepare dummy features
         run: |
-          mkdir -p data
-          python - <<'PY'
-            import pandas as pd, numpy as np
-            n = 500
-            rng = pd.date_range('2025-01-01', periods=n, freq='T')
-            mid = np.linspace(1000, 1010, n)
-            df = pd.DataFrame({
-                'timestamp': rng,
-                'mid_price': mid,
-                'rel_spread': np.full(n, 0.0005)
-            })
-            df.to_parquet('data/realtime_features_dummy.parquet', index=False)
-            print('Dummy features saved')
-          PY
+          python -c "import pandas as pd, numpy as np, pathlib; pathlib.Path('data').mkdir(exist_ok=True); df=pd.DataFrame({'timestamp':pd.date_range('2025-01-01', periods=500, freq='T'),'mid_price':np.linspace(1000,1010,500),'rel_spread':np.full(500,0.0005)}); df.to_parquet('data/realtime_features_dummy.parquet', index=False); print('Dummy features saved')"
 
       - name: Generate labels
         run: |
