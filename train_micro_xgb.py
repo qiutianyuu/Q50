@@ -57,11 +57,18 @@ def train_model(X, y, label_name, test_size=0.2):
         print("没有有效标签，跳过训练")
         return None, None
     
-    # 转换为二分类 (1 vs -1)
+    # 转换为二分类 (1 表示 long, 0 表示 short)
     y_binary = (y_filtered == 1).astype(int)
-    
-    print(f"有效样本: {len(X_filtered)} (long: {y_binary.sum()}, short: {len(y_binary)-y_binary.sum()})")
-    
+
+    long_cnt = int(y_binary.sum())
+    short_cnt = int(len(y_binary) - long_cnt)
+    print(f"有效样本: {len(X_filtered)} (long: {long_cnt}, short: {short_cnt})")
+
+    # 若类别不足两类，跳过训练以避免 XGBoost 抛出错误
+    if long_cnt == 0 or short_cnt == 0:
+        print("⚠️  仅检测到单一类别标签，跳过此标签的模型训练\n")
+        return None, None
+
     # 分割数据
     X_train, X_test, y_train, y_test = train_test_split(
         X_filtered, y_binary, test_size=test_size, random_state=42, stratify=y_binary

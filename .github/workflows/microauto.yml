@@ -4,6 +4,8 @@ on:
   workflow_dispatch:          # 手动触发
   schedule:
     - cron: '0 2 * * *'       # UTC 每天 02:00
+  push:
+    branches: [ main ]
 
 jobs:
   backtest:
@@ -23,7 +25,22 @@ jobs:
 
       - name: Prepare dummy features
         run: |
-          python -c "import pandas as pd, numpy as np, pathlib; pathlib.Path('data').mkdir(exist_ok=True); df=pd.DataFrame({'timestamp':pd.date_range('2025-01-01', periods=500, freq='T'),'mid_price':np.linspace(1000,1010,500),'rel_spread':np.full(500,0.0005)}); df.to_parquet('data/realtime_features_dummy.parquet', index=False); print('Dummy features saved')"
+          python - << 'PY'
+          import pandas as pd, numpy as np, pathlib, random
+          pathlib.Path('data').mkdir(exist_ok=True)
+          n = 1000
+          # 构造随机游走价格序列，确保涨跌都有
+          prices = [1000]
+          for _ in range(1, n):
+              prices.append(prices[-1] * (1 + random.uniform(-0.002, 0.002)))
+          df = pd.DataFrame({
+              'timestamp': pd.date_range('2025-01-01', periods=n, freq='min'),
+              'mid_price': prices,
+              'rel_spread': np.full(n, 0.0005)
+          })
+          df.to_parquet('data/realtime_features_dummy.parquet', index=False)
+          print('Dummy features saved:', len(df))
+          PY
 
       - name: Generate labels
         run: |
