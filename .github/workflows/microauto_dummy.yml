@@ -4,10 +4,13 @@ on:
   workflow_dispatch:          # 手动触发
   schedule:
     - cron: '0 2 * * *'       # UTC 每天 02:00
+  push:                        # 推 main 分支也自动跑
+    branches: [ main ]
 
 jobs:
   backtest:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -21,23 +24,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # ---------- 1. 生成示例特征 ----------
       - name: Prepare dummy features
         run: |
-          mkdir -p data
-          python - <<'PY'
-            import pandas as pd, numpy as np
-            n = 500
-            rng = pd.date_range('2025-01-01', periods=n, freq='T')
-            mid = np.linspace(1000, 1010, n)
-            df = pd.DataFrame({
-                'timestamp': rng,
-                'mid_price': mid,
-                'rel_spread': np.full(n, 0.0005)
-            })
-            df.to_parquet('data/realtime_features_dummy.parquet', index=False)
-            print('Dummy features saved')
-          PY
+          python -c "import pandas as pd, numpy as np, pathlib; \
+          pathlib.Path('data').mkdir(exist_ok=True); \
+          df=pd.DataFrame({'timestamp':pd.date_range('2025-01-01', periods=500, freq='T'), \
+                           'mid_price':np.linspace(1000,1010,500), \
+                           'rel_spread':np.full(500,0.0005)}); \
+          df.to_parquet('data/realtime_features_dummy.parquet', index=False); \
+          print('Dummy features saved')"
 
+      # ---------- 2. 生成标签 ----------
       - name: Generate labels
         run: |
           python generate_micro_labels.py \
@@ -45,6 +43,7 @@ jobs:
             --horizon 120 --alpha 0.3 --mode maker --require-fill \
             --output data/labels.parquet
 
+      # ---------- 3. 训练模型 ----------
       - name: Train model
         run: |
           python train_micro_xgb.py \
@@ -53,6 +52,7 @@ jobs:
             --label-col label_h120_a0.3_maker \
             --trials 25
 
+      # ---------- 4. 回测 ----------
       - name: Run backtest
         run: |
           python micro_backtest_maker.py \
@@ -60,15 +60,18 @@ jobs:
             --features data/labels.parquet \
             --json-out backtest_results.json
 
+      # ---------- 5. 选最佳参数 ----------
       - name: Select best parameters
         run: |
           python scripts/select_best.py backtest_results.json --metric sharpe > best_params.yaml
 
+      # ---------- 6. 更新配置 ----------
       - name: Update config
         run: |
           mkdir -p config
           cp best_params.yaml config/micro_best.yaml
 
+      # ---------- 7. 提交回仓库 ----------
       - name: Commit and push
         run: |
           git config user.name "micro-bot"
@@ -77,6 +80,7 @@ jobs:
           git commit -m "auto: update micro_best params" || echo "No changes"
           git push
 
+      # ---------- 8. 上传产物 ----------
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -84,4 +88,4 @@ jobs:
           path: |
             backtest_results.json
             best_params.yaml
-            xgb_model.bin 
+            xgb_model.bin
