@@ -29,7 +29,7 @@ jobs:
         run: |
           python generate_micro_labels.py \
             --input data/realtime_features_dummy.parquet \
-            --horizon 120 --alpha 0.3 --mode maker --require-fill \
+            --horizon 120 --alpha 0.3 --mode maker \
             --output data/labels.parquet
 
       - name: Train model
