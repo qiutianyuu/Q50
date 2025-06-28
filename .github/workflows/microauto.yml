@@ -1,5 +1,8 @@
 name: microauto
 
+permissions:
+  contents: write  # 允许工作流通过 GITHUB_TOKEN 推送代码
+
 on:
   workflow_dispatch:          # 手动触发
   schedule:
