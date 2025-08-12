@@ -1,9 +1,9 @@
 holding_steps: 60
-max_drawdown: -0.377740420002098
-sharpe: 0.4676625292962751
+max_drawdown: -0.27906196235377895
+sharpe: 0.39585491330356165
 threshold_long: 0.7
 threshold_short: 0.3
-total_return: 0.08285256175739478
+total_return: 0.04963535394626688
 total_trades: 17
-win_rate: 0.6470588235294118
+win_rate: 0.5882352941176471
 
